@@ -1,0 +1,11 @@
+# GraphQL Starter Debug
+logginglevel.com.merapar: DEBUG
+#server:
+#  port: 8080
+spring:
+  datasource:
+    url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE
+    username: test
+    password: test
+    driverClassName: org.h2.Driver
+
