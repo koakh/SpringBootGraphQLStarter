@@ -1,4 +1,4 @@
-package com.koakh.springbootgraphqlstarter;
+package com.koakh.springbootgraphqlstarter.domain;
 
 public class Author {
   private String id;

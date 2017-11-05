@@ -1,6 +1,9 @@
-package com.koakh.springbootgraphqlstarter;
+package com.koakh.springbootgraphqlstarter.resource.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.koakh.springbootgraphqlstarter.dao.PostDao;
+import com.koakh.springbootgraphqlstarter.domain.Author;
+import com.koakh.springbootgraphqlstarter.domain.Post;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

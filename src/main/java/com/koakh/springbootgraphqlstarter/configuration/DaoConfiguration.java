@@ -1,9 +1,9 @@
 package com.koakh.springbootgraphqlstarter.configuration;
 
-import com.koakh.springbootgraphqlstarter.Author;
-import com.koakh.springbootgraphqlstarter.AuthorDao;
-import com.koakh.springbootgraphqlstarter.Post;
-import com.koakh.springbootgraphqlstarter.PostDao;
+import com.koakh.springbootgraphqlstarter.domain.Author;
+import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
+import com.koakh.springbootgraphqlstarter.domain.Post;
+import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

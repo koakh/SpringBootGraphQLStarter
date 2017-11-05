@@ -194,17 +194,17 @@ type Mutation {
 
 No method found with any of the following signatures (with or without graphql.schema.DataFetchingEnvironment as the last argument), in priority order:
 
-  com.koakh.springbootgraphqlstarter.Mutation.writePost(~title, ~text, ~category)
-  com.koakh.springbootgraphqlstarter.Mutation.getWritePost(~title, ~text, ~category)
+  com.koakh.springbootgraphqlstarter.resource.graphql.Mutation.writePost(~title, ~text, ~category)
+  com.koakh.springbootgraphqlstarter.resource.graphql.Mutation.getWritePost(~title, ~text, ~category)
 
 
 
   public Post writePost(String title, String text, String category, String author) {
 
 
-Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.Author>): graphql type is marked as nonnull but java.util.Optional was used
+Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.domain.Author>): graphql type is marked as nonnull but java.util.Optional was used
 
-Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.Author>): graphql type is marked as nonnull but java.util.Optional was used
+Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.domain.Author>): graphql type is marked as nonnull but java.util.Optional was used
 
 
 

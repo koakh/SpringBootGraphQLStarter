@@ -1,4 +1,6 @@
-package com.koakh.springbootgraphqlstarter;
+package com.koakh.springbootgraphqlstarter.dao;
+
+import com.koakh.springbootgraphqlstarter.domain.Author;
 
 import java.util.List;
 import java.util.Optional;
