@@ -20,6 +20,7 @@ public class Query implements GraphQLQueryResolver {
   private PostDao postDao;
   private AuthorDao authorDao;
 
+  // Must be InSync with GraphqlConfiguration.Query
   public Query(PostDao postDao, AuthorDao authorDao) {
 
     this.postDao = postDao;

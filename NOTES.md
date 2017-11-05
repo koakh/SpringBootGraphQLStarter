@@ -1,13 +1,9 @@
-https://plugins.jetbrains.com/plugin/8097-js-graphql
-https://github.com/jimkyndemeyer/js-graphql-intellij-plugin/issues/81
-require to goto settings and enable Node.js and NPM 
-
-
-
 # Spring Boot GraphQL Starter 
 
 - [Getting Started with GraphQL and Spring Boot](http://www.baeldung.com/spring-graphql)
+
 - [Download Eugenp Spring Tutorials : Files are in spring-boot project](https://github.com/eugenp/tutorials)
+
 - [https://github.com/eugenp/tutorials/tree/master/spring-boot](https://github.com/eugenp/tutorials/tree/master/spring-boot)
 
 # Related Links
@@ -46,6 +42,17 @@ that explains the problem, Im using
 ```
 
 ! Kotlin demo uses `1.5.6.RELEASE` and it works, like my old project with `1.5.7.RELEASE`
+
+use this release parent
+
+```xml
+<parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>1.5.8.RELEASE</version>
+  <relativePath/> <!-- lookup parent from repository -->
+</parent>
+```
 
 # Start Project
 
@@ -162,61 +169,72 @@ replace old `schema.graphqls` with
 
 ```json
 type Post {
-    id: ID!
-    title: String!
-    text: String!
-    category: String
-    author: Author!
+  id: ID!
+  title: String!
+  text: String!
+  category: String
+  author: Author
 }
- 
+
 type Author {
-    id: ID!
-    name: String!
-    thumbnail: String
-    posts: [Post]!
+  id: ID!
+  name: String!
+  thumbnail: String
+  posts: [Post]!
 }
- 
+
 # The Root Query for the application
 type Query {
-    # The API Version
-    version: String!
-    # Blog
-    recentPosts(count: Int, offset: Int): [Post]!
+  # The API Version
+  version: String!
+  # Blog
+  recentPosts(count: Int, offset: Int): [Post]!
+  getAuthor(id: String!): Author
 }
 
 # The Root Mutation for the application
 type Mutation {
-    writePost(title: String!, text: String!, category: String) : Post!
+  writePost(title: String!, text: String!, category: String, author: String!): Post!
 }
 ```
 
+add extra Query endpoint to Query.java
 
+```java
+public Optional<Author> getAuthor(String id) {
 
-No method found with any of the following signatures (with or without graphql.schema.DataFetchingEnvironment as the last argument), in priority order:
+  return authorDao.getAuthor(id);
+}
+```
 
-  com.koakh.springbootgraphqlstarter.resource.graphql.Mutation.writePost(~title, ~text, ~category)
-  com.koakh.springbootgraphqlstarter.resource.graphql.Mutation.getWritePost(~title, ~text, ~category)
+### Run and test root query and mutation query
 
+```shell
+mvn install
+mvn spring-boot:run
+```
 
+query {
+  version
+}
 
-  public Post writePost(String title, String text, String category, String author) {
-
-
-Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.domain.Author>): graphql type is marked as nonnull but java.util.Optional was used
-
-Unable to match type definition (NonNullType{type=TypeName{name='Author'}}) with java type (java.util.Optional<com.koakh.springbootgraphqlstarter.domain.Author>): graphql type is marked as nonnull but java.util.Optional was used
-
-
-
-
-
-
-graphql.schema.GraphQLObjectType cannot be cast to graphql.schema.GraphQLInputType
-	at graphql.schema.GraphQLArgument.replaceTypeReferences(
-
-
-
-
+query {
+  recentPosts(count: 10, offset: 0) {
+    id
+    title
+    text
+    category
+    author {
+      id
+      name
+      thumbnail
+      posts {
+        id
+        title
+      }
+    }
+  }
+}
 
 ```json
 query{
@@ -231,9 +249,41 @@ query{
   }
 }
 ```
+mutation {
+  writePost(title: "title", text: "text", 
+    category: "category", 
+    author: "Author4") {
+    id
+  }
+}
 
-### Run and test root query and mutation query
 
+mutation {
+  createAuthor(name: "Mario") {
+    id
+    name
+  }
+}
+
+### Reorganize Files Structure
+
+- configuration/DaoConfiguration.java
+- configuration/GraphqlConfiguration.java
+- dao
+- dao/AuthorDao.java
+- dao/PostDao.java
+- domain
+- domain/Author.java
+- domain/Post.java
+- repository
+- repository/AuthorRepository.java
+- repository/PostRepository.java
+- resource/graphql
+- resource/graphql/AuthorResolver.java
+- resource/graphql/Mutation.java
+- resource/graphql/PostResolver.java
+- resource/graphql/Query.java
+- Application.java
 
 ### Configure H2
 

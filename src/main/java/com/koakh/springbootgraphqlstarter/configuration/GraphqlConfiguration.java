@@ -31,8 +31,8 @@ public class GraphqlConfiguration {
   }
 
   @Bean
-  public Mutation mutation(PostDao postDao) {
+  public Mutation mutation(PostDao postDao, AuthorDao authorDao) {
 
-    return new Mutation(postDao);
+    return new Mutation(postDao, authorDao);
   }
 }
