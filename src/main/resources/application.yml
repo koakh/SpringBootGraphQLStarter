@@ -1,3 +1,4 @@
+#debug: true
 # GraphQL Starter Debug
 logginglevel.com.merapar: DEBUG
 #server:
@@ -8,4 +9,10 @@ spring:
     username: test
     password: test
     driverClassName: org.h2.Driver
-
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        # Required to use db fields with field names and use @Column annotation
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

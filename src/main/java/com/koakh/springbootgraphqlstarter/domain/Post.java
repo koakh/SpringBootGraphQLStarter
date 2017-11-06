@@ -1,10 +1,17 @@
 package com.koakh.springbootgraphqlstarter.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Post {
+  @Id
   private String id;
   private String title;
   private String text;
   private String category;
+  //@Column(name = "authorId")
   private String authorId;
 
   public String getId() {

@@ -207,64 +207,6 @@ public Optional<Author> getAuthor(String id) {
 }
 ```
 
-### Run and test root query and mutation query
-
-```shell
-mvn install
-mvn spring-boot:run
-```
-
-query {
-  version
-}
-
-query {
-  recentPosts(count: 10, offset: 0) {
-    id
-    title
-    text
-    category
-    author {
-      id
-      name
-      thumbnail
-      posts {
-        id
-        title
-      }
-    }
-  }
-}
-
-```json
-query{
-  getAuthor(id: "Author4") {
-    id
-    name
-    thumbnail
-    posts {
-      id
-      title
-    }
-  }
-}
-```
-mutation {
-  writePost(title: "title", text: "text", 
-    category: "category", 
-    author: "Author4") {
-    id
-  }
-}
-
-
-mutation {
-  createAuthor(name: "Mario") {
-    id
-    name
-  }
-}
-
 ### Reorganize Files Structure
 
 - configuration/DaoConfiguration.java
@@ -285,13 +227,96 @@ mutation {
 - resource/graphql/Query.java
 - Application.java
 
-### Configure H2
+### Run and test root query and mutation query
+
+```shell
+mvn install
+mvn spring-boot:run
+```
+
+Create some new mutations and query like
+
+```json
+# The Root Query for the application
+type Query {
+  getAuthors(count: Int, offset: Int): [Author]!
+  getAuthor(id: String!): Author
+}
+
+# The Root Mutation for the application
+type Mutation {
+  createAuthor(name: String!, thumbnail: String): Author!
+}
+```
+
+```json
+query {
+  version
+}
+```
+
+```json
+query {
+  recentPosts(count: 10, offset: 0) {
+    id
+    title
+    text
+    category
+    author {
+      id
+      name
+      thumbnail
+      posts {
+        id
+        title
+      }
+    }
+  }
+}
+```
+
+```json
+mutation {
+  createAuthor(name: "Diana", thumbnail: "http://example.com/authors/diana") {
+    id
+    name
+  }
+}
+```
+
+```json
+mutation {
+  writePost(title: "post title diana", text: "post text diana", 
+    category: "development", 
+    author: "6be4d543-f8db-4386-9727-63fefc137370") {
+    id
+  }
+}
+```
+
+```json
+query{
+  getAuthor(id: "6be4d543-f8db-4386-9727-63fefc137370") {
+    id
+    name
+    thumbnail
+    posts {
+      id
+      title
+      text
+      category
+    }
+  }
+}
+```
+
+### Configure Interfaces for Dao and H2 Repositorys
 
 - [How to configure spring-boot to use file based H2 database](https://stackoverflow.com/questions/37903105/how-to-configure-spring-boot-to-use-file-based-h2-database)
 
 Adding the following to my `application.properties` definitely creates the database file in the right place:
 
-```
+```yml
 spring.datasource.url=jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE
 spring.datasource.username=test
 spring.datasource.password=test
@@ -300,9 +325,46 @@ spring.datasource.driverClassName=org.h2.Driver
 
 I can even connect to it with the **H2 console when devtools is enabled** 
 
-[http://localhost:8080/h2-console/](http://localhost:8080/h2-console/)
+- [http://localhost:8080/h2-console/](http://localhost:8080/h2-console/)
 
 The next logical step is to visit the [http://localhost:8080/autoconfig](http://localhost:8080/autoconfig) endpoint and check the auto-configuration status.
+
+
+
+
+Add `@Entity` and `@Id` to `Author` and `Posts` Entities, to turn pojos into spring managed jpa beans, else 
+
+> `Error creating bean with name 'postRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.koakh.springbootgraphqlstarter.domain.Post`
+
+@Entity
+public class Post {
+  @Id
+
+
+
+
+
+```sql
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a2492-c279-11e7-abc4-cec278b6b50a', 'mario', 'http://example.com/authors/mario');
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a2faa-c279-11e7-abc4-cec278b6b50a', 'alex', 'http://example.com/authors/alex');
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a3284-c279-11e7-abc4-cec278b6b50a', 'jorge', 'http://example.com/authors/jono');
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a3450-c279-11e7-abc4-cec278b6b50a', 'bruno', 'http://example.com/authors/bruno');
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a35cc-c279-11e7-abc4-cec278b6b50a', 'andreia', 'http://example.com/authors/andreia');
+INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a35ca-c279-11e7-abc4-cec278b6b50a', 'diana', 'http://example.com/authors/diana');
+
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 02', 'text post 02', 'category b', '4f2a35cc-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 03', 'text post 03', 'category c', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 04', 'text post 04', 'category d', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 05', 'text post 05', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 06', 'text post 06', 'category a', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 07', 'text post 07', 'category b', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 08', 'text post 08', 'category c', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 09', 'text post 09', 'category d', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 10', 'text post 10', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 01', 'text post 01', 'category a', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 11', 'text post 11', 'category a', '4f2a35cc-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 12', 'text post 12', 'category b', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
+```
 
 #### Run and Test
 

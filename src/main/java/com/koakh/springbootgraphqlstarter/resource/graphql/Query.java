@@ -37,6 +37,11 @@ public class Query implements GraphQLQueryResolver {
     return postDao.getRecentPosts(count, offset);
   }
 
+  public List<Author> getAuthors(int count, int offset) {
+
+    return authorDao.getAuthors(count, offset);
+  }
+
   public Optional<Author> getAuthor(String id) {
 
     return authorDao.getAuthor(id);

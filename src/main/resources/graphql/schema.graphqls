@@ -19,6 +19,7 @@ type Query {
   version: String!
   # Blog
   recentPosts(count: Int, offset: Int): [Post]!
+  getAuthors(count: Int, offset: Int): [Author]!
   getAuthor(id: String!): Author
 }
 
@@ -26,5 +27,5 @@ type Query {
 type Mutation {
   writePost(title: String!, text: String!, category: String, author: String!): Post!
   #createAuthor(author: Author!): Author!
-  createAuthor(name: String!): Author!
+  createAuthor(name: String!, thumbnail: String): Author!
 }

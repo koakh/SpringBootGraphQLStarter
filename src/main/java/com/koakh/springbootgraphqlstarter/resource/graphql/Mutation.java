@@ -24,24 +24,27 @@ public class Mutation implements GraphQLMutationResolver {
     this.authorDao = authorDao;
   }
 
-  public Post writePost(String title, String text, String category, Author author) {
+  //public Post writePost(String title, String text, String category, Author author) {
+  public Post writePost(String title, String text, String category, String authorId) {
     Post post = new Post();
     post.setId(UUID.randomUUID().toString());
     post.setTitle(title);
     post.setText(text);
     post.setCategory(category);
-    post.setAuthorId(author.getId());
+    //post.setAuthorId(author.getId());
+    post.setAuthorId(authorId);
     postDao.savePost(post);
 
     return post;
   }
 
-  public Author createAuthor(String name) {
-    //public Author createAuthor(Author author) {
-    //authorDao.addAuthor(author);
+  public Author createAuthor(String name, String thumbnail) {
     Author author = new Author();
-    author.setId(name.toLowerCase());
+    author.setId(UUID.randomUUID().toString());
     author.setName(name);
+    author.setThumbnail(thumbnail);
+    // Add to Moke Data
+    authorDao.addAuthor(author);
 
     return author;
   }
