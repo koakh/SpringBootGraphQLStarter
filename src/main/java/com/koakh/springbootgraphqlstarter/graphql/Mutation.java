@@ -1,4 +1,4 @@
-package com.koakh.springbootgraphqlstarter.resource.graphql;
+package com.koakh.springbootgraphqlstarter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
