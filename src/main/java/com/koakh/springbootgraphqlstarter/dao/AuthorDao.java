@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AuthorDao implements AuthorService {
+
   private List<Author> authors;
 
   public AuthorDao(List<Author> authors) {

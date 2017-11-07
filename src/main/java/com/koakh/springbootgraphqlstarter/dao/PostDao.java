@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostDao implements PostService {
+
   private List<Post> posts;
 
   public PostDao(List<Post> posts) {

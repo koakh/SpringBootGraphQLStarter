@@ -5,6 +5,9 @@ import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
 import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import com.koakh.springbootgraphqlstarter.domain.Author;
 import com.koakh.springbootgraphqlstarter.domain.Post;
+import com.koakh.springbootgraphqlstarter.service.AuthorService;
+import com.koakh.springbootgraphqlstarter.service.PostService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -14,14 +17,14 @@ import java.util.UUID;
  */
 @Component
 public class Mutation implements GraphQLMutationResolver {
-  private PostDao postDao;
-  private AuthorDao authorDao;
+  private PostService postService;
+  private AuthorService authorService;
 
   // Must be InSync with GraphqlConfiguration.Mutation
-  public Mutation(PostDao postDao, AuthorDao authorDao) {
+  public Mutation(PostService postService, AuthorService authorService) {
 
-    this.postDao = postDao;
-    this.authorDao = authorDao;
+    this.postService = postService;
+    this.authorService = authorService;
   }
 
   //public Post writePost(String title, String text, String category, Author author) {
@@ -33,7 +36,7 @@ public class Mutation implements GraphQLMutationResolver {
     post.setCategory(category);
     //post.setAuthorId(author.getId());
     post.setAuthorId(authorId);
-    postDao.savePost(post);
+    postService.savePost(post);
 
     return post;
   }
@@ -44,7 +47,7 @@ public class Mutation implements GraphQLMutationResolver {
     author.setName(name);
     author.setThumbnail(thumbnail);
     // Add to Moke Data
-    authorDao.addAuthor(author);
+    authorService.addAuthor(author);
 
     return author;
   }

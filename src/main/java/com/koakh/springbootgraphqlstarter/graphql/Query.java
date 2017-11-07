@@ -1,10 +1,10 @@
 package com.koakh.springbootgraphqlstarter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
-import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import com.koakh.springbootgraphqlstarter.domain.Author;
 import com.koakh.springbootgraphqlstarter.domain.Post;
+import com.koakh.springbootgraphqlstarter.service.AuthorService;
+import com.koakh.springbootgraphqlstarter.service.PostService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,14 +17,14 @@ import java.util.Optional;
  */
 @Component
 public class Query implements GraphQLQueryResolver {
-  private PostDao postDao;
-  private AuthorDao authorDao;
+  private PostService postService;
+  private AuthorService authorService;
 
   // Must be InSync with GraphqlConfiguration.Query
-  public Query(PostDao postDao, AuthorDao authorDao) {
+  public Query(PostService postService, AuthorService authorService) {
 
-    this.postDao = postDao;
-    this.authorDao = authorDao;
+    this.postService = postService;
+    this.authorService = authorService;
   }
 
   public String version() {
@@ -34,16 +34,16 @@ public class Query implements GraphQLQueryResolver {
 
   public List<Post> recentPosts(int count, int offset) {
 
-    return postDao.getRecentPosts(count, offset);
+    return postService.getRecentPosts(count, offset);
   }
 
   public List<Author> getAuthors(int count, int offset) {
 
-    return authorDao.getAuthors(count, offset);
+    return authorService.getAuthors(count, offset);
   }
 
   public Optional<Author> getAuthor(String id) {
 
-    return authorDao.getAuthor(id);
+    return authorService.getAuthor(id);
   }
 }
