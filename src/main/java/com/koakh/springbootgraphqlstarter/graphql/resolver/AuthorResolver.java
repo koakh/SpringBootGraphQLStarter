@@ -1,22 +1,23 @@
 package com.koakh.springbootgraphqlstarter.graphql.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
-import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import com.koakh.springbootgraphqlstarter.domain.Author;
 import com.koakh.springbootgraphqlstarter.domain.Post;
+import com.koakh.springbootgraphqlstarter.service.PostService;
 
 import java.util.List;
 
 public class AuthorResolver implements GraphQLResolver<Author> {
-  private PostDao postDao;
 
-  public AuthorResolver(PostDao postDao) {
+  private PostService postService;
 
-    this.postDao = postDao;
+  public AuthorResolver(PostService postService) {
+
+    this.postService = postService;
   }
 
   public List<Post> getPosts(Author author) {
 
-    return postDao.getAuthorPosts(author.getId());
+    return postService.getAuthorPosts(author.getId());
   }
 }

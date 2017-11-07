@@ -17,11 +17,15 @@ import java.util.Optional;
  */
 @Component
 public class Query implements GraphQLQueryResolver {
-  private PostService postService;
-  private AuthorService authorService;
+
+  private final PostService postService;
+  private final AuthorService authorService;
 
   // Must be InSync with GraphqlConfiguration.Query
-  public Query(PostService postService, AuthorService authorService) {
+  public Query(
+    PostService postService,
+    AuthorService authorService
+  ) {
 
     this.postService = postService;
     this.authorService = authorService;

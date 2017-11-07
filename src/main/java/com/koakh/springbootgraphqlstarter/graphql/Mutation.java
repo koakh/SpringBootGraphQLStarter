@@ -1,13 +1,10 @@
 package com.koakh.springbootgraphqlstarter.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
-import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import com.koakh.springbootgraphqlstarter.domain.Author;
 import com.koakh.springbootgraphqlstarter.domain.Post;
 import com.koakh.springbootgraphqlstarter.service.AuthorService;
 import com.koakh.springbootgraphqlstarter.service.PostService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -17,8 +14,9 @@ import java.util.UUID;
  */
 @Component
 public class Mutation implements GraphQLMutationResolver {
-  private PostService postService;
-  private AuthorService authorService;
+
+  private final PostService postService;
+  private final AuthorService authorService;
 
   // Must be InSync with GraphqlConfiguration.Mutation
   public Mutation(PostService postService, AuthorService authorService) {

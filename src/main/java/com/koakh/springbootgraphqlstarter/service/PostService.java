@@ -1,14 +1,30 @@
 package com.koakh.springbootgraphqlstarter.service;
 
 import com.koakh.springbootgraphqlstarter.domain.Post;
+import com.koakh.springbootgraphqlstarter.repository.IPostRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface PostService {
+@Service
+public class PostService {
 
-  List<Post> getRecentPosts(int count, int offset);
+  private final IPostRepository repository;
 
-  List<Post> getAuthorPosts(String author);
+  public PostService(@Qualifier("daoRepository") IPostRepository repository) {
+    this.repository = repository;
+  }
 
-  void savePost(Post post);
+  public List<Post> getRecentPosts(int count, int offset) {
+    return repository.getRecentPosts(count, offset);
+  }
+
+  public void savePost(Post post) {
+    repository.savePost(post);
+  }
+
+  public List<Post> getAuthorPosts(String id) {
+    return repository.getAuthorPosts(id);
+  }
 }

@@ -1,16 +1,21 @@
-package com.koakh.springbootgraphqlstarter.dao;
+package com.koakh.springbootgraphqlstarter.repository.dao;
 
 import com.koakh.springbootgraphqlstarter.domain.Post;
-import com.koakh.springbootgraphqlstarter.service.PostService;
+import com.koakh.springbootgraphqlstarter.repository.IPostRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostDao implements PostService {
+@Repository
+@Qualifier("daoRepository")
+public class PostServiceDaoImpl implements IPostRepository {
 
-  private List<Post> posts;
+  private final List<Post> posts;
 
-  public PostDao(List<Post> posts) {
+  public PostServiceDaoImpl(List<Post> posts) {
+
     this.posts = posts;
   }
 

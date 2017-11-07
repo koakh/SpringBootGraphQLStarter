@@ -334,7 +334,7 @@ The next logical step is to visit the [http://localhost:8080/autoconfig](http://
 
 Add `@Entity` and `@Id` to `Author` and `Posts` Entities, to turn pojos into spring managed jpa beans, else 
 
-> `Error creating bean with name 'postRepository': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.koakh.springbootgraphqlstarter.domain.Post`
+> `Error creating bean with name 'postService': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.koakh.springbootgraphqlstarter.domain.Post`
 
 @Entity
 public class Post {
@@ -376,3 +376,42 @@ Endpoints: (Search Mapped "{[/)
     GraphiQL
         http://localhost:8080/graphiql
             
+
+
+
+
+
+
+
+
+
+
+### Problems
+
+Never use Impl PostFix ex PostRepositoryH2Impl, else it gives circular problems
+
+the problem is that we have a JPA PostRepositoryH2 class and PostRepositoryH2Impl, and it turns into a conflit because of [Custom implementations for Spring Data repositories](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.custom-implementations) that uses this postfix convention
+
+```java
+class CustomizedUserRepositoryImpl implements CustomizedUserRepository
+```
+
+> Tip: Use `PostRepositoryH2Implementation` or other class name for Implementation
+
+error 
+
+```
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The dependencies of some of the beans in the application context form a cycle:
+
+┌─────┐
+|  postRepositoryH2Impl defined in file [/home/mario/Documents/Development/IntelliJIdeaProjects/SpringBootGraphQLStarter/target/classes/com/koakh/springbootgraphqlstarter/repository/h2/PostRepositoryH2Impl.class]
+└─────┘
+```
+
+- [Spring Boot @Qualifier annotation](http://zetcode.com/articles/springbootqualifier/)

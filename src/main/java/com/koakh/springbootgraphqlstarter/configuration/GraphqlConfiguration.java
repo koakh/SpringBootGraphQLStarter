@@ -1,11 +1,11 @@
 package com.koakh.springbootgraphqlstarter.configuration;
 
-import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
-import com.koakh.springbootgraphqlstarter.dao.PostDao;
-import com.koakh.springbootgraphqlstarter.graphql.resolver.AuthorResolver;
 import com.koakh.springbootgraphqlstarter.graphql.Mutation;
-import com.koakh.springbootgraphqlstarter.graphql.resolver.PostResolver;
 import com.koakh.springbootgraphqlstarter.graphql.Query;
+import com.koakh.springbootgraphqlstarter.graphql.resolver.AuthorResolver;
+import com.koakh.springbootgraphqlstarter.graphql.resolver.PostResolver;
+import com.koakh.springbootgraphqlstarter.service.AuthorService;
+import com.koakh.springbootgraphqlstarter.service.PostService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,26 +13,26 @@ import org.springframework.context.annotation.Configuration;
 public class GraphqlConfiguration {
 
   @Bean
-  public PostResolver postResolver(AuthorDao authorDao) {
+  public PostResolver postResolver(AuthorService authorService) {
 
-    return new PostResolver(authorDao);
+    return new PostResolver(authorService);
   }
 
   @Bean
-  public AuthorResolver authorResolver(PostDao postDao) {
+  public AuthorResolver authorResolver(PostService postService) {
 
-    return new AuthorResolver(postDao);
+    return new AuthorResolver(postService);
   }
 
   @Bean
-  public Query query(PostDao postDao, AuthorDao authorDao) {
+  public Query query(PostService postService, AuthorService authorService) {
 
-    return new Query(postDao, authorDao);
+    return new Query(postService, authorService);
   }
 
   @Bean
-  public Mutation mutation(PostDao postDao, AuthorDao authorDao) {
+  public Mutation mutation(PostService postService, AuthorService authorService) {
 
-    return new Mutation(postDao, authorDao);
+    return new Mutation(postService, authorService);
   }
 }

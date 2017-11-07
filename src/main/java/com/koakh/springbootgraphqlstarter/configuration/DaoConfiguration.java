@@ -1,9 +1,7 @@
 package com.koakh.springbootgraphqlstarter.configuration;
 
 import com.koakh.springbootgraphqlstarter.domain.Author;
-import com.koakh.springbootgraphqlstarter.dao.AuthorDao;
 import com.koakh.springbootgraphqlstarter.domain.Post;
-import com.koakh.springbootgraphqlstarter.dao.PostDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +11,7 @@ import java.util.List;
 @Configuration
 public class DaoConfiguration {
   @Bean
-  public PostDao postDao() {
+  public List<Post> postDao() {
     List<Post> posts = new ArrayList<>();
     // Moke some Posts
     for (int postId = 0; postId < 10; ++postId) {
@@ -26,11 +24,11 @@ public class DaoConfiguration {
         posts.add(post);
       }
     }
-    return new PostDao(posts);
+    return posts;
   }
 
   @Bean
-  public AuthorDao authorDao() {
+  public List<Author> authorDao() {
     List<Author> authors = new ArrayList<>();
     // Moke some Authors
     for (int authorId = 0; authorId < 10; ++authorId) {
@@ -40,6 +38,6 @@ public class DaoConfiguration {
       author.setThumbnail("http://example.com/authors/" + authorId);
       authors.add(author);
     }
-    return new AuthorDao(authors);
+    return authors;
   }
 }

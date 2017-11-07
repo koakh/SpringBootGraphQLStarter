@@ -1,17 +1,21 @@
-package com.koakh.springbootgraphqlstarter.dao;
+package com.koakh.springbootgraphqlstarter.repository.dao;
 
 import com.koakh.springbootgraphqlstarter.domain.Author;
-import com.koakh.springbootgraphqlstarter.service.AuthorService;
+import com.koakh.springbootgraphqlstarter.repository.IAuthorRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AuthorDao implements AuthorService {
+@Repository
+@Qualifier("daoRepository")
+public class AuthorServiceDaoImpl implements IAuthorRepository {
 
-  private List<Author> authors;
+  private final List<Author> authors;
 
-  public AuthorDao(List<Author> authors) {
+  public AuthorServiceDaoImpl(List<Author> authors) {
 
     this.authors = authors;
   }
