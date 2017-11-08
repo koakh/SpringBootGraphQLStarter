@@ -1,3 +1,8 @@
+# Actuator
+# Full authentication is required to access actuator endpoints. Consider adding Spring Security or set 'management.security.enabled' to false.
+management:
+  security:
+    enabled: false
 #debug: true
 # GraphQL Starter Debug
 logginglevel.com.merapar: DEBUG
@@ -14,5 +19,5 @@ spring:
     hibernate:
       ddl-auto: create-drop
       naming:
-        # Required to use db fields with field names and use @Column annotation
+        # Required to use db fields with field names and use @Column annotation, else authorId Truens into AUTHOR_ID
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

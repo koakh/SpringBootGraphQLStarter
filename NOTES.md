@@ -16,6 +16,10 @@
 
 > Great Kotlin Post 
 
+# Other Links
+
+- [Spring Boot @Qualifier annotation](http://zetcode.com/articles/springbootqualifier/)
+
 # Warning dont use milestones spring boot starter parent ex 2.0.0.M5, use RELEASE like 1.5.8.RELEASE
 
 > After try to reach /graphql endpoint, and always get this error
@@ -54,7 +58,7 @@ use this release parent
 </parent>
 ```
 
-# Start Project
+# Start Project Implementation
 
 Create a spring boot initializr maven project with 1.5.8.RELEASE and
 
@@ -147,7 +151,7 @@ mvn install
 mvn spring-boot:run
 ```
 
-### Copy files from eugenp project to namespace, and refator namespace
+### Copy files from eugenp project to namespace, and refactor namespace
 
 ```shell
 cp .src/tutorials-master/spring-boot/src/main/java/com/baeldung/graphql/* src/main/java/com/example/demo/
@@ -207,7 +211,7 @@ public Optional<Author> getAuthor(String id) {
 }
 ```
 
-### Reorganize Files Structure
+# Reorganize Files Structure
 
 - configuration/DaoConfiguration.java
 - configuration/GraphqlConfiguration.java
@@ -227,7 +231,7 @@ public Optional<Author> getAuthor(String id) {
 - resource/graphql/Query.java
 - Application.java
 
-### Run and test root query and mutation query
+# Run and test root query and mutation query
 
 ```shell
 mvn install
@@ -310,7 +314,7 @@ query{
 }
 ```
 
-### Configure Interfaces for Dao and H2 Repositorys
+# Configure H2 Database
 
 - [How to configure spring-boot to use file based H2 database](https://stackoverflow.com/questions/37903105/how-to-configure-spring-boot-to-use-file-based-h2-database)
 
@@ -323,26 +327,49 @@ spring.datasource.password=test
 spring.datasource.driverClassName=org.h2.Driver
 ```
 
-I can even connect to it with the **H2 console when devtools is enabled** 
+### Use H2 console when devtools is enabled
 
 - [http://localhost:8080/h2-console/](http://localhost:8080/h2-console/)
 
-The next logical step is to visit the [http://localhost:8080/autoconfig](http://localhost:8080/autoconfig) endpoint and check the auto-configuration status.
-
-
-
+### Turn Pojos domain into JPA Entities
 
 Add `@Entity` and `@Id` to `Author` and `Posts` Entities, to turn pojos into spring managed jpa beans, else 
 
 > `Error creating bean with name 'postService': Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.koakh.springbootgraphqlstarter.domain.Post`
 
+ex
+
+```java
 @Entity
-public class Post {
+public class Author {
   @Id
+  private String id;
+  private String name;
+  private String thumbnail;
+  ...
+```
 
+# Moke SQL DAta 
 
+`src/main/resources/application.yml`
 
+```yml
+spring:
+  datasource:
+    url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE
+    username: test
+    password: test
+    driverClassName: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        # Required to use db fields with field names and use @Column annotation, else authorId Truens into AUTHOR_ID
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+```
 
+`src/main/resources/data.sql`
 
 ```sql
 INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a2492-c279-11e7-abc4-cec278b6b50a', 'mario', 'http://example.com/authors/mario');
@@ -353,42 +380,30 @@ INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a35cc-c279-11e7-abc4-cec27
 INSERT INTO Author (id, name, thumbnail ) VALUES ('4f2a35ca-c279-11e7-abc4-cec278b6b50a', 'diana', 'http://example.com/authors/diana');
 
 INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 02', 'text post 02', 'category b', '4f2a35cc-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 03', 'text post 03', 'category c', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 04', 'text post 04', 'category d', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 05', 'text post 05', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 06', 'text post 06', 'category a', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 07', 'text post 07', 'category b', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 08', 'text post 08', 'category c', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 09', 'text post 09', 'category d', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 10', 'text post 10', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 01', 'text post 01', 'category a', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 11', 'text post 11', 'category a', '4f2a35cc-c279-11e7-abc4-cec278b6b50a');
-INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415228-c27a-11e7-abc4-cec278b6b50a', 'title post 12', 'text post 12', 'category b', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415229-c27a-11e7-abc4-cec278b6b50a', 'title post 03', 'text post 03', 'category c', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415230-c27a-11e7-abc4-cec278b6b50a', 'title post 04', 'text post 04', 'category d', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415231-c27a-11e7-abc4-cec278b6b50a', 'title post 05', 'text post 05', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415232-c27a-11e7-abc4-cec278b6b50a', 'title post 06', 'text post 06', 'category a', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415233-c27a-11e7-abc4-cec278b6b50a', 'title post 07', 'text post 07', 'category b', '4f2a3284-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415234-c27a-11e7-abc4-cec278b6b50a', 'title post 08', 'text post 08', 'category c', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415235-c27a-11e7-abc4-cec278b6b50a', 'title post 09', 'text post 09', 'category d', '4f2a35ca-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415236-c27a-11e7-abc4-cec278b6b50a', 'title post 10', 'text post 10', 'category e', '4f2a3450-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415237-c27a-11e7-abc4-cec278b6b50a', 'title post 01', 'text post 01', 'category a', '4f2a2492-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415238-c27a-11e7-abc4-cec278b6b50a', 'title post 11', 'text post 11', 'category a', '4f2a35cc-c279-11e7-abc4-cec278b6b50a');
+INSERT INTO Post (id, title, text, category, authorId) VALUES ('b4415239-c27a-11e7-abc4-cec278b6b50a', 'title post 12', 'text post 12', 'category b', '4f2a2faa-c279-11e7-abc4-cec278b6b50a');
 ```
 
-#### Run and Test
+# Run and Test
 
-Endpoints: (Search Mapped "{[/)
-    Actuator:
-        http://localhost:8080/application
-        http://localhost:8080/application/status
-        http://localhost:8080/application/info
-    GraphiQL
-        http://localhost:8080/graphiql
-            
+> WIP
 
+# Configure Interfaces for Dao and H2 Repositories
 
+View Implemented files in project
 
+### Problems : The dependencies of some of the beans in the application context form a cycle
 
-
-
-
-
-
-
-### Problems
-
-Never use Impl PostFix ex PostRepositoryH2Impl, else it gives circular problems
+> Never use Impl PostFix ex PostRepositoryH2Impl, else it gives circular problems
 
 the problem is that we have a JPA PostRepositoryH2 class and PostRepositoryH2Impl, and it turns into a conflit because of [Custom implementations for Spring Data repositories](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.custom-implementations) that uses this postfix convention
 
@@ -414,4 +429,30 @@ The dependencies of some of the beans in the application context form a cycle:
 └─────┘
 ```
 
-- [Spring Boot @Qualifier annotation](http://zetcode.com/articles/springbootqualifier/)
+# Actuator
+
+`src/main/resources/application.yml`
+
+disable security to use actuator
+
+```yml
+# Actuator
+# Full authentication is required to access actuator endpoints. Consider adding Spring Security or set 'management.security.enabled' to false.
+management:
+  security:
+    enabled: false
+```
+else 
+
+```
+2017-11-07 22:53:35.677  INFO 8216 --- [nio-8080-exec-1] s.b.a.e.m.MvcEndpointSecurityInterceptor : Full authentication is required to access actuator endpoints. Consider adding Spring Security or set 'management.security.enabled' to false.
+```
+
+The next logical step is to visit the [http://localhost:8080/autoconfig](http://localhost:8080/autoconfig) endpoint and check the auto-configuration status.
+
+**other mappings**
+
+- [http://localhost:8080/mappings](http://localhost:8080/mappings)
+- [http://localhost:8080/autoconfig](http://localhost:8080/autoconfig)
+- [http://localhost:8080/beans](http://localhost:8080/beans)
+- [http://localhost:8080/metrics](http://localhost:8080/metrics)
