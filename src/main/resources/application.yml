@@ -19,5 +19,5 @@ spring:
     hibernate:
       ddl-auto: create-drop
       naming:
-        # Required to use db fields with field names and use @Column annotation, else authorId Truens into AUTHOR_ID
+        # Required to use db fields with field namwores and use @Column annotation, else authorId Truens into AUTHOR_ID
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
