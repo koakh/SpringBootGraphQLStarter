@@ -12,7 +12,7 @@ public class PostService {
 
   private final IPostRepository repository;
 
-  public PostService(@Qualifier("daoRepository") IPostRepository repository) {
+  public PostService(@Qualifier("h2Repository") IPostRepository repository) {
     this.repository = repository;
   }
 

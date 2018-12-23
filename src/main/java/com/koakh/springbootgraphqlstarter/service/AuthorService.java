@@ -13,7 +13,7 @@ public class AuthorService {
 
   private final IAuthorRepository repository;
 
-  public AuthorService(@Qualifier("daoRepository") IAuthorRepository repository) {
+  public AuthorService(@Qualifier("h2Repository") IAuthorRepository repository) {
     this.repository = repository;
   }
 
